@@ -25,4 +25,8 @@ export interface UsuariosProps {
     lastName: string;
     email: string;
     telefono: string;
+    rol: {
+      id: string;
+      name: string
+    }
 }

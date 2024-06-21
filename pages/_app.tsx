@@ -16,7 +16,13 @@ import {
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     // <ApolloProvider client={client}>
-     <UserProvider><TooltipProvider> <Layout><Component {...pageProps} /></Layout></TooltipProvider> </UserProvider>
+     <UserProvider>
+      <TooltipProvider> 
+        <Layout>
+          <Component {...pageProps} />
+          </Layout>
+          </TooltipProvider> 
+          </UserProvider>
     // </ApolloProvider>
   );
 }
