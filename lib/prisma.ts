@@ -8,6 +8,7 @@ declare global {
 }
 
 if (process.env.NODE_ENV === 'production') {
+  console.log('production :>> ', process.env.NODE_ENV);
   prisma = new PrismaClient()
 } else {
   if (!global.prisma) {

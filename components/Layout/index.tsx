@@ -1,3 +1,4 @@
+import { withPageAuthRequired } from '@auth0/nextjs-auth0/client'
 import React from "react";
 import Header from "./Header";
 
@@ -12,5 +13,4 @@ const Layout: React.FC<Props> = ({ children }) => {
     </div>
   );
 };
-
-export default Layout;
+export default withPageAuthRequired(Layout)
