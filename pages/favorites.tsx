@@ -1,7 +1,7 @@
 import React from 'react';
 import { AwesomeLink } from '../components/AwesomeLink';
 import { gql, useQuery } from '@apollo/client';
-import type { Link } from '.prisma/client';
+
 
 const FavoritesQuery = gql`
   query {
@@ -34,7 +34,7 @@ const Favorites = () => {
               You haven't bookmarked any links yet 👀
             </p>
           ) : (
-            data.favorites.bookmarks.map((link: Link) => (
+            data.favorites.bookmarks.map((link: { id: number; title: string; description: string; category: string; imageUrl: string; url: string; }) => (
               <div key={link.id}>
                 <AwesomeLink
                   title={link.title}
