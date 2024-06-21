@@ -1,33 +1,33 @@
-import { ApolloServer } from '@apollo/server';
-import { startServerAndCreateNextHandler } from '@as-integrations/next';
-import { makeExecutableSchema } from '@graphql-tools/schema';
-import { gql } from 'graphql-tag';
+// pages/api/graphql.ts
 
+import { ApolloServer, gql } from 'apollo-server-micro';
+
+// Define tu esquema GraphQL utilizando SDL (Schema Definition Language)
 const typeDefs = gql`
   type Query {
-    users: [User!]!
-  }
-
-  type User {
-    name: String
-    username: String
+    hello: String
   }
 `;
 
-const users = [{ name: 'Foo Bar', username: 'foobar' }];
-
+// Resolutores para el esquema GraphQL
 const resolvers = {
   Query: {
-    users() {
-      return users;
-    },
+    hello: () => 'Hola, mundo!',
   },
 };
 
-export const schema = makeExecutableSchema({ typeDefs, resolvers });
-
-const server = new ApolloServer({
-  schema,
+// Configuración del servidor Apollo
+const apolloServer = new ApolloServer({
+  typeDefs,
+  resolvers,
 });
 
-export default startServerAndCreateNextHandler(server);
+// Middleware para manejar las solicitudes GraphQL
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
+// Exporta el manejador de Apollo Server
+export default apolloServer.createHandler({ path: '/api/graphql' });
