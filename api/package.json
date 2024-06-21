@@ -1,0 +1,24 @@
+{
+  "name": "api",
+  "version": "0.1.0",
+  "description": "Backend de nuestra aplicación con una API en GraphQL",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon --exec ts-node src/index.ts"
+  },
+  "dependencies": {
+    "apollo-server": "^3.13.0",
+    "apollo-server-core": "^3.13.0",
+    "apollo-server-express": "^3.13.0",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "graphql": "^16.8.2",
+    "nodemon": "^3.1.4",
+    "prisma": "^5.15.1",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "@prisma/client": "^5.15.1"
+  }
+}
