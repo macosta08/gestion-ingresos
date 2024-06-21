@@ -1,33 +1,19 @@
-import { ApolloServer } from '@apollo/server';
-import { startServerAndCreateNextHandler } from '@as-integrations/next';
-import { makeExecutableSchema } from '@graphql-tools/schema';
-import { gql } from 'graphql-tag';
+import { createYoga } from 'graphql-yoga'
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { schema } from '../../graphql/schema'
+import { createContext } from '../../graphql/context'
 
-const typeDefs = gql`
-  type Query {
-    users: [User!]!
-  }
-
-  type User {
-    name: String
-    username: String
-  }
-`;
-
-const users = [{ name: 'Foo Bar', username: 'foobar' }];
-
-const resolvers = {
-  Query: {
-    users() {
-      return users;
-    },
-  },
-};
-
-export const schema = makeExecutableSchema({ typeDefs, resolvers });
-
-const server = new ApolloServer({
+export default createYoga<{
+  req: NextApiRequest
+  res: NextApiResponse
+}>({
   schema,
-});
+  context: createContext,
+  graphqlEndpoint: '/api/graphql'
+})
 
-export default startServerAndCreateNextHandler(server);
+export const config = {
+  api: {
+    bodyParser: false
+  }
+}
