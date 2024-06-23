@@ -1,23 +1,44 @@
-import "@/styles/globals.css";
-import type { AppProps } from "next/app";
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import { UserProvider } from '@auth0/nextjs-auth0/client';
-import Layout from "@/components/Layout";
-import {
-  TooltipProvider,
-} from "@/components/ui/tooltip"
+// // pages/_app.tsx
+// import '../styles/tailwind.css'
+// import { UserProvider } from '@auth0/nextjs-auth0/client'
+// import Layout from '../components/Layout'
+// import { ApolloProvider } from '@apollo/client'
+// import type { AppProps } from 'next/app'
+// import apolloClient from '../lib/apollo'
 
-// // Configuración de Apollo Client
-// const client = new ApolloClient({
-//   uri: 'URL_DEL_SERVIDOR_GRAPHQL',
-//   cache: new InMemoryCache(),
-// });
+// function MyApp({ Component, pageProps }: AppProps) {
+//   return (
+//     <UserProvider>
+//       <ApolloProvider client={apolloClient}>
+//         <Layout>
+//           <Component {...pageProps} />
+//         </Layout>
+//       </ApolloProvider>
+//     </UserProvider>
+//   )
+// }
+
+// export default MyApp
+// pages/_app.tsx
+import '../styles/tailwind.css';
+import { UserProvider } from '@auth0/nextjs-auth0/client';
+import Layout from '../components/Layout';
+import { ApolloProvider } from '@apollo/client';
+import type { AppProps } from 'next/app';
+import apolloClient from '../lib/apollo';
+import { TooltipProvider } from '@radix-ui/react-tooltip';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    // <ApolloProvider client={client}>
-     <UserProvider><TooltipProvider> <Layout><Component {...pageProps} /></Layout></TooltipProvider> </UserProvider>
-    // </ApolloProvider>
+    <UserProvider>
+      <ApolloProvider client={apolloClient}>
+        <TooltipProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </TooltipProvider>
+      </ApolloProvider>
+    </UserProvider>
   );
 }
 
