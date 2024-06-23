@@ -1,3 +1,26 @@
+// {
+//   "compilerOptions": {
+//     "lib": ["dom", "dom.iterable", "esnext"],
+//     "allowJs": true,
+//     "skipLibCheck": true,
+//     "strict": true,
+//     "noEmit": true,
+//     "esModuleInterop": true,
+//     "module": "esnext",
+//     "target": "ES6",
+//     "moduleResolution": "node",
+//     "resolveJsonModule": true,
+//     "isolatedModules": true,
+//     "jsx": "preserve",
+//     "incremental": true,
+//     "paths": {
+//       "@/*": ["./*"]
+//     },
+//     "types": ["node", "@types/react" ]
+//   },
+//   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+//   "exclude": ["node_modules"]
+// }
 {
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -16,8 +39,9 @@
     "paths": {
       "@/*": ["./*"]
     },
-    "types": ["node", "@types/react" ]
+    "types": ["node", "@types/react", "@types/jest"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "jest.config.js"],
   "exclude": ["node_modules"]
 }
+
