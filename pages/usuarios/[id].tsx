@@ -5,31 +5,11 @@ import TextInput from '@/components/AtomicDesign/Atoms/TextInput';
 // import { useQuery } from '@apollo/client';
 // import { GET_USER } from '@/graphql/queries/usuarios';
  import { useRouter } from 'next/router';
-import { useMutation } from '@apollo/client';
-import { CREATE_USUARIO, UPDATE_USUARIO } from '@/graphql/mutations/usuarios';
-import { GET_ALL_USERS } from '@/graphql/queries/usuarios';
+import { useFormikUsuario } from '@/hooks/usuarios/useFormikUsuario';
 
-interface UsuarioMutationProps {
-  id: string  | undefined;
-    name: string  | undefined;
-    lastName: string  | undefined;
-    email: string  | undefined;
-    telefono: string  | undefined;
-    rol: string | undefined;
-}
-
-function IngresosEgresosId() {
+function UsuarioId() {
    const router = useRouter();
-   const [data, setData] = useState<UsuarioMutationProps>({
-    id: undefined,
-      name: undefined,
-      lastName: undefined,
-      email: undefined,
-      telefono: undefined,
-      rol: undefined,
-  })
-   console.log(data)
-  // const { data: dataQuery } = useQuery(GET_USER, {
+     // const { data: dataQuery } = useQuery(GET_USER, {
   //  variables: {
   //   id: router.query.id as string
   //  },
@@ -48,84 +28,85 @@ function IngresosEgresosId() {
   //   },
   //   fetchPolicy: 'cache-and-network',
   // });
-  // const [createMutation] = useMutation(CREATE_USUARIO);
-  // const [updateMutation] = useMutation(UPDATE_USUARIO);
-  // const handleMutation = async () => {
 
-  //   if(router.query.id === 'nuevo'){
-  //     await createMutation({
-  //       variables: {
-  //         where: { id },
-  //         data: { visto: true },
-  //       },
-  //       refetchQueries: [GET_ALL_USERS],
-  //     });
-  //   }else {
-  //     await updateMutation({
-  //       variables: {
-  //         where: { id },
-  //         data: { visto: true },
-  //       },
-  //       refetchQueries: [GET_ALL_USERS],
-  //     });
-  //   }
-   
-  // };
+  // aqui hay que pasar la data que venga del query
+  const data = {
+    id: undefined,
+      name: undefined,
+      lastName: undefined,
+      email: undefined,
+      telefono: undefined,
+      rol: {
+        id: undefined,
+        name: undefined
+      }
+  }
+  const {formik, handleMutation} = useFormikUsuario({data})
   return (
     <div className="flex flex-col p-4 gap-8 items-center h-screen">
       <section className="w-full max-w-4xl p-6 mx-auto bg-purple-200 rounded-md shadow-md dark:bg-gray-800">
         <TextSecundary text= {router.query.id === 'nuevo' ? 'Nuevo usuario' : 'Editar usuario'}  />
-        <form className="mt-4 space-y-6">
+        <form onSubmit={formik.handleSubmit} className="mt-4 space-y-6">
           <TextInput
             label="Nombre"
             type="text"
             placeholder="Ingrese el nombre"
+            name='name'
             value={data?.name}
-            onChange={( e: React.ChangeEvent<HTMLInputElement>) => setData({...data, name: e.target.value})}
+            onChange={formik.handleChange}
             
           />
           <TextInput
+           name='lastName'
             label="Apellido"
             type="text"
             placeholder="Ingrese el apellido"
             value={data?.lastName}
-            onChange={(e) => setData({...data, lastName: e.target.value})}
+            onChange={formik.handleChange}
           />
            <TextInput
+            name='email'
             label="Correo"
             type="email"
             placeholder="Ingrese el correo electronico"
             value={data?.email}
-            onChange={(e) => setData({...data, email: e.target.value})}
+            onChange={formik.handleChange}
           />
           <TextInput
+           name='telefono'
             label="Telefono"
             type="tel"
             placeholder="Ingrese el telefono"
             value={data?.telefono}
-            onChange={(e) => setData({...data, telefono: e.target.value})}
+            onChange={formik.handleChange}
           />
 
           <div className='bg-white shadow-md  rounded-md flex flex-col gap-3 p-2 w-[300px]'> 
             <span className='font-medium'>Selecciona un rol</span>
             <div  className='gap-4 flex'>
             <TextInput
+             name='rol'
             label="Administrador"
             type="radio"
-            checked={data?.rol === "Administrador"}
-            onChange={(e) => setData({...data, rol: e.target.value})}
+            checked={data?.rol?.name === "Administrador"}
+            onChange={() => {
+                formik.setFieldValue('rol', "Administrador");
+            }}
           /> 
           <TextInput
+            name='rol'
           label="Usuario"
           type="radio"
-          checked={data?.rol === "Usuario"}
-          onChange={(e) => setData({...data, rol: e.target.value})}
+          checked={data?.rol?.name === "Usuario"}
+          onChange={() => {
+            formik.setFieldValue('rol', "Usuario");
+        }}
          
         /></div></div>
          
           <div className="flex justify-end">
           <Button 
-          // onClick={() => handleMutation()}
+          onClick={() => handleMutation()}
             >Guardar</Button>
           </div>
         </form>
@@ -134,4 +115,4 @@ function IngresosEgresosId() {
   );
 }
 
-export default IngresosEgresosId;
+export default UsuarioId;
