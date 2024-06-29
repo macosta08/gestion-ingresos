@@ -12,14 +12,14 @@ const PrivateLayout = ({ children, rejected }: PrivateLayoutProps) => {
   const { data: session, status } = useSession();
   if (status === 'loading') return <Loading open />;
 
-  if (!session) {
-    signIn('auth0');
-    return <Loading open />;
-  }
+  // if (!session) {
+  //   signIn('auth0');
+  //   return <Loading open />;
+  // }
 
-  if (!rejected) return <Layout>{children}</Layout>;
+  return <Layout>{children}</Layout>;
 
-  return <div>You are not authorized to view this site.</div>;
+  // return <div>You are not authorized to view this site.</div>;
   // return <Layout>{children}</Layout>;
 };
 

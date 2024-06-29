@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import TextSecundary from '@/components/AtomicDesign/Atoms/TextSecundary';
 import { Button } from '@/components/ui/button';
 import TextInput from '@/components/AtomicDesign/Atoms/TextInput';
-// import { useQuery } from '@apollo/client';
-// import { GET_USER } from '@/graphql/queries/usuarios';
+import { useQuery } from '@apollo/client';
+import { GET_USER } from '@/graphql/queries/usuarios';
  import { useRouter } from 'next/router';
 import { useFormikUsuario } from '@/hooks/usuarios/useFormikUsuario';
+import { GET_ROLES } from '@/graphql/queries/roles';
 
 function UsuarioId() {
    const router = useRouter();
@@ -28,6 +29,9 @@ function UsuarioId() {
   //   },
   //   fetchPolicy: 'cache-and-network',
   // });
+  const { data: dataRoles } = useQuery(GET_ROLES, {
+    fetchPolicy: 'cache-and-network',
+  });
 
   // aqui hay que pasar la data que venga del query
   const data = {
@@ -42,6 +46,8 @@ function UsuarioId() {
       }
   }
   const {formik, handleMutation} = useFormikUsuario({data})
+  console.log('data :>> ', data);
+  console.log('formik :>> ', formik);
   return (
     <div className="flex flex-col p-4 gap-8 items-center h-screen">
       <section className="w-full max-w-4xl p-6 mx-auto bg-purple-200 rounded-md shadow-md dark:bg-gray-800">
@@ -84,25 +90,22 @@ function UsuarioId() {
           <div className='bg-white shadow-md  rounded-md flex flex-col gap-3 p-2 w-[300px]'> 
             <span className='font-medium'>Selecciona un rol</span>
             <div  className='gap-4 flex'>
-            <TextInput
-             name='rol'
-            label="Administrador"
-            type="radio"
-            checked={data?.rol?.name === "Administrador"}
-            onChange={() => {
-                formik.setFieldValue('rol', "Administrador");
-            }}
-          /> 
-          <TextInput
-            name='rol'
-          label="Usuario"
-          type="radio"
-          checked={data?.rol?.name === "Usuario"}
-          onChange={() => {
-            formik.setFieldValue('rol', "Usuario");
-        }}
-         
-        /></div></div>
+              {
+                dataRoles && dataRoles?.roles?.map((role: {id: string, name: string})=>(
+                  <TextInput
+                    name={role?.name}
+                    label={role?.name}
+                    type="radio"
+                    checked={data?.rol?.name === role?.name}
+                    onChange={() => {
+                        formik.setFieldValue('rol', role?.id);
+                    }}
+               />
+                ))
+              }
+
+        </div>
+        </div>
          
           <div className="flex justify-end">
           <Button 

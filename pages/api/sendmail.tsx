@@ -1,9 +1,9 @@
 import nodemailer from 'nodemailer';
 
-const SendMail = (req: any, res: any) => {
+const SendMail = (req: { method: string; body: { email: string; name: string; password: string; }; }, res: { status: (arg0: number) => { (): any; new(): any; json: { (arg0: { status: string; }): any; new(): any; }; }; }) => {
   if (req.method === 'POST') {
     const { email, name, password } = req.body;
-    const transporter: any = nodemailer.createTransport({
+    const transporter = nodemailer.createTransport({
       host: 'email-smtp.us-east-1.amazonaws.com',
       port: 465,
       secure: true,
@@ -26,7 +26,7 @@ const SendMail = (req: any, res: any) => {
 <meta name="x-apple-disable-message-reformatting">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="telephone=no" name="format-detection">
-<title>Nueva plantilla 5</title><!--[if (mso 16)]>
+<title>Bienvenido a Gestión de Ingresos</title><!--[if (mso 16)]>
 <style type="text/css">
 a {text-decoration: none;}
 </style>

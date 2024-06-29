@@ -9,9 +9,11 @@ const UPDATE_USUARIO = gql`
 `;
 
 const CREATE_USUARIO = gql`
-  mutation DeleteUser($userId: String!) {
-    deleteUser(userId: $userId) {
-      id
+  mutation CreateUser($data: UserCreateInput) {
+    createUser(data: $data) {
+      account {
+        id
+      }
     }
   }
 `;

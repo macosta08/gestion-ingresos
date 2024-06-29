@@ -1,33 +1,46 @@
-// pages/api/graphql.ts
+// import 'reflect-metadata';
+// import 'ts-tiny-invariant';
+import { ApolloServer } from 'apollo-server-micro';
+import Cors from 'micro-cors';
+import { getSession } from 'next-auth/react';
+import { types } from '@/graphql/models/types';
+import { GQLEnums } from '@/graphql/models/enums';
+import { resolvers } from '@/graphql/models/resolvers';
+import { MicroRequest } from 'apollo-server-micro/dist/types';
+import { ServerResponse, IncomingMessage } from 'http';
 
-import { ApolloServer, gql } from 'apollo-server-micro';
-
-// Define tu esquema GraphQL utilizando SDL (Schema Definition Language)
-const typeDefs = gql`
-  type Query {
-    hello: String
-  }
-`;
-
-// Resolutores para el esquema GraphQL
-const resolvers = {
-  Query: {
-    hello: () => 'Hola, mundo!',
-  },
-};
-
-// Configuración del servidor Apollo
-const apolloServer = new ApolloServer({
-  typeDefs,
-  resolvers,
+const cors = Cors({
+  allowMethods: ['POST', 'OPTIONS', 'GET', 'HEAD'],
 });
 
-// Middleware para manejar las solicitudes GraphQL
 export const config = {
   api: {
     bodyParser: false,
   },
 };
 
-// Exporta el manejador de Apollo Server
-export default apolloServer.createHandler({ path: '/api/graphql' });
+export default cors(async (req: MicroRequest, res: ServerResponse<IncomingMessage>) => {
+  if (req.method === 'OPTIONS') {
+    res.end();
+    return false;
+  }
+  const session = await getSession({ req });
+  console.log('session :>> ', session);
+  // if (process.env.NODE_ENV === 'production' && !session) {
+  //   return res.status(401).send({ error: 'unauthorized' });
+  // }
+
+  const apolloServer = new ApolloServer({
+    context: () => ({ session }),
+    typeDefs: [...types, GQLEnums],
+    resolvers: [...resolvers],
+    introspection: true,
+  });
+
+  await apolloServer.start();
+
+  return apolloServer.createHandler({
+    path: '/api/graphql',
+  })(req, res);
+});
+

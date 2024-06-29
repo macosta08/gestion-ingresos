@@ -1,5 +1,4 @@
-// CAMBIAR
-const dominioAuth0 = 'portalagendamientonutresa.us.auth0.com';
+const dominioAuth0 = 'gestion-ingresos-app.us.auth0.com';
 
 const makePost = (
   // eslint-disable-next-line no-undef
@@ -27,6 +26,7 @@ const makeJSONPost = (
   },
   options = {} as any
 ) => {
+  console.log('data :>> ', data);
   const body = JSON.stringify(data);
   const headers = options.headers || {};
   headers['Content-Type'] = 'application/json';
@@ -38,9 +38,9 @@ export const getAuth0Token = () => {
   const url = `https://${dominioAuth0}/oauth/token `;
   const headers = { 'content-type': 'application/json' };
   const body = {
-    client_id: 'id30SjCiPNdAOAsYrlDyi8I8sPo1e7fB',
+    client_id: '1qz20ZLTnLUSHHwytd4UErzP5r5fckpm',
     client_secret:
-      'zTi6bGH4oyq_61x1AE38h8nG7rvWKwZ91yJr4Vn1FMbQxe-wHsycPZyUkvwab-px',
+      'bEMBcZtxdo5tlsSX5WqCPZNMozXLvmK9HjFbNjOZCZfcYtSd1ZcMAj5kRu5_PEWZ',
     audience: `https://${dominioAuth0}/api/v2/`,
     grant_type: 'client_credentials',
   };
